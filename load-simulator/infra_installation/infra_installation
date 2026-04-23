@@ -1,0 +1,106 @@
+# WSL 2 ve Docker kurulumu
+wsl --install
+wsl --set-default-version 2
+
+sudo apt update
+sudo apt install -y docker.io
+
+# Docker başlat
+sudo service docker start
+
+# Kullanıcıya yetki
+sudo usermod -aG docker $USER
+
+# yeniden login
+exit
+wsl
+
+# Docker çalışıyor mu kontrol et
+docker ps
+
+# Kubernetes için gerekli araçları yükle
+sudo snap install kubectl --classic
+#Test kubectl
+kubectl version --client
+
+# K3d yükle
+curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+# Test k3d
+k3d version
+
+# K3d cluster oluştur
+k3d cluster create thesis-cluster \
+  --agents 2 \
+  -p "3000:3000@loadbalancer" \
+  -p "3001:30081@loadbalancer" \
+  -p "9090:9090@loadbalancer"
+
+# Cluster durumunu kontrol et
+kubectl get nodes
+
+# helm yükle
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+# Test helm
+helm version
+
+# Prometheus ve Grafana'yı Helm ile yükle
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install monitoring prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace
+
+# Grafana'ya erişim için LoadBalancer tipi servise çevir
+kubectl patch svc monitoring-grafana -n monitoring --type='merge' -p '{
+  "spec": {
+    "type": "LoadBalancer",
+    "ports": [
+      {
+        "name": "http-web",
+        "port": 3000,
+        "targetPort": 3000
+      }
+    ]
+  }
+}'
+
+# Prometheus'a erişim için LoadBalancer tipi servise çevir
+kubectl patch svc monitoring-kube-prometheus-prometheus -n monitoring --type='merge' -p '{
+  "spec": {
+    "type": "LoadBalancer",
+    "ports": [
+      {
+        "name": "http-web",
+        "port": 9090,
+        "targetPort": 9090
+      }
+    ]
+  }
+}'
+
+# keda'yı Helm ile yükle
+helm repo add kedacore https://kedacore.github.io/charts
+helm repo update
+
+helm install keda kedacore/keda \
+  --namespace keda \
+  --create-namespace
+
+# Keda durumunu kontrol et
+kubectl get pods -n keda
+
+# k6 yükle 
+sudo apt update
+sudo apt install -y gnupg software-properties-common
+
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/k6.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/k6.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+
+sudo apt update
+sudo apt install k6
+
+# k6 test için hazır
+k6 version

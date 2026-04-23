@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoscale-test-service
+  labels:
+    app: ats
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ats
+  template:
+    metadata:
+      labels:
+        app: ats
+    spec:
+      containers:
+        - name: ats
+          image: test-app:20260423-2339
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10

@@ -1,0 +1,35 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: autoscale-test-service-keda-slo
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: autoscale-test-service
+
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  pollingInterval: 15
+  cooldownPeriod: 60
+
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        metricName: ats_slo_violation
+        query: |
+          (
+            histogram_quantile(
+              0.95,
+              sum(rate(http_request_duration_seconds_bucket{endpoint!="/metrics", endpoint!="/health"}[1m])) by (le)
+            ) > bool 0.3
+          )
+          +
+          (
+            (
+              sum(rate(http_requests_total{http_status=~"5..", endpoint!="/metrics", endpoint!="/health"}[1m]))
+              /
+              clamp_min(sum(rate(http_requests_total{endpoint!="/metrics", endpoint!="/health"}[1m])), 0.0001)
+            ) > bool 0.05
+          )
+        threshold: "0.5"
