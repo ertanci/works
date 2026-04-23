@@ -2,10 +2,21 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 const TARGET_URL = __ENV.URL || 'http://localhost:3001';
-
 const DELAY = __ENV.DELAY || '0.05';
 const ERROR_RATE = __ENV.ERROR_RATE || '2';
 const CPU_LOAD = __ENV.CPU_LOAD || '0.05';
+
+// Deterministic endpoint distribution:
+// 50% light, 35% heavy, 15% error
+const endpoints = [
+  '/light', '/light', '/light', '/light', '/light',
+  '/light', '/light', '/light', '/light', '/light',
+
+  '/heavy', '/heavy', '/heavy', '/heavy', '/heavy',
+  '/heavy', '/heavy',
+
+  '/error', '/error', '/error'
+];
 
 export const options = {
   scenarios: {
@@ -29,24 +40,14 @@ export const options = {
 };
 
 export default function () {
-  const r = Math.random();
-
-  let endpoint = '/';
-
-  if (r < 0.50) {
-    endpoint = '/light';
-  } else if (r < 0.85) {
-    endpoint = '/heavy';
-  } else {
-    endpoint = '/error';
-  }
+  const endpoint = endpoints[__ITER % endpoints.length];
 
   const url = `${TARGET_URL}${endpoint}?delay=${DELAY}&error_rate=${ERROR_RATE}&cpu_load=${CPU_LOAD}`;
 
   const res = http.get(url);
 
   check(res, {
-    'status is 2xx or expected 5xx': (r) => r.status >= 200 && r.status < 600
+    'response completed': (r) => r.status >= 200 && r.status < 600
   });
 
   sleep(1);
