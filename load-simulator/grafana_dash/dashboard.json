@@ -37,13 +37,18 @@
                 "spec": {
                   "hidden": false,
                   "query": {
-                    "group": "",
+                    "group": "prometheus",
                     "kind": "DataQuery",
                     "spec": {
                       "expr": "sum(rate(http_requests_total{exported_endpoint!=\"/metrics\",exported_endpoint!=\"/health\"}[1m]))",
-                      "legendFormat": "Gelen Yük (RPS)"
+                      "legendFormat": "Gelen Yük (RPS)",
+                      "editorMode": "code",
+                      "range": true
                     },
-                    "version": "v0"
+                    "version": "v0",
+                    "datasource": {
+                      "name": "prometheus"
+                    }
                   },
                   "refId": "A"
                 }
@@ -53,15 +58,62 @@
                 "spec": {
                   "hidden": false,
                   "query": {
-                    "group": "",
+                    "group": "prometheus",
                     "kind": "DataQuery",
                     "spec": {
                       "expr": "kube_deployment_status_replicas_available{deployment=\"autoscale-test-service\",namespace=\"default\"}",
-                      "legendFormat": "Aktif Pod Sayısı"
+                      "legendFormat": "Aktif Pod Sayısı",
+                      "editorMode": "code",
+                      "range": true
+                    },
+                    "version": "v0",
+                    "datasource": {
+                      "name": "prometheus"
+                    }
+                  },
+                  "refId": "B"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": {
+                      "name": "prometheus"
+                    },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "clamp_max(count(kube_horizontalpodautoscaler_info{namespace=\"default\",horizontalpodautoscaler!~\"keda-hpa-.*\"}), 1)",
+                      "legendFormat": "HPA Aktif (1/0)",
+                      "range": true
                     },
                     "version": "v0"
                   },
-                  "refId": "B"
+                  "refId": "C"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": {
+                      "name": "prometheus"
+                    },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "clamp_max(count(kube_horizontalpodautoscaler_info{namespace=\"default\",horizontalpodautoscaler=~\"keda-hpa-.*\"}), 1)",
+                      "legendFormat": "KEDA Aktif (1/0)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "D"
                 }
               }
             ],
@@ -69,10 +121,10 @@
             "transformations": []
           }
         },
-        "description": "",
+        "description": "RPS, aktif pod sayısı ve aktif autoscaler bilgisini aynı zaman ekseninde gösterir. HPA/KEDA çizgileri 1=aktif, 0=pasif anlamına gelir.",
         "id": 1,
         "links": [],
-        "title": "Analiz 1: Gelen Yük (RPS) ve Aktif Pod Sayısı",
+        "title": "Analiz 1: Gelen Yük (RPS), Aktif Pod Sayısı ve Aktif Autoscaler",
         "vizConfig": {
           "group": "timeseries",
           "kind": "VizConfig",
@@ -126,7 +178,72 @@
                   ]
                 }
               },
-              "overrides": []
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "HPA Aktif (1/0)"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.axisPlacement",
+                      "value": "right"
+                    },
+                    {
+                      "id": "custom.axisLabel",
+                      "value": "Autoscaler Aktif (1/0)"
+                    },
+                    {
+                      "id": "unit",
+                      "value": "short"
+                    },
+                    {
+                      "id": "custom.lineWidth",
+                      "value": 2
+                    },
+                    {
+                      "id": "custom.drawStyle",
+                      "value": "line"
+                    },
+                    {
+                      "id": "custom.lineInterpolation",
+                      "value": "stepAfter"
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "KEDA Aktif (1/0)"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.axisPlacement",
+                      "value": "right"
+                    },
+                    {
+                      "id": "custom.axisLabel",
+                      "value": "Autoscaler Aktif (1/0)"
+                    },
+                    {
+                      "id": "unit",
+                      "value": "short"
+                    },
+                    {
+                      "id": "custom.lineWidth",
+                      "value": 2
+                    },
+                    {
+                      "id": "custom.drawStyle",
+                      "value": "line"
+                    },
+                    {
+                      "id": "custom.lineInterpolation",
+                      "value": "stepAfter"
+                    }
+                  ]
+                }
+              ]
             },
             "options": {
               "annotations": {
@@ -967,71 +1084,6 @@
           "version": "13.0.1"
         }
       }
-    },
-    "panel-9": {
-      "kind": "Panel",
-      "spec": {
-        "data": {
-          "kind": "QueryGroup",
-          "spec": {
-            "queries": [
-              {
-                "kind": "PanelQuery",
-                "spec": {
-                  "hidden": false,
-                  "query": {
-                    "group": "",
-                    "kind": "DataQuery",
-                    "spec": {
-                      "expr": "100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
-                      "legendFormat": "{{instance}}"
-                    },
-                    "version": "v0"
-                  },
-                  "refId": "A"
-                }
-              }
-            ],
-            "queryOptions": {},
-            "transformations": []
-          }
-        },
-        "description": "Node bazlı CPU kullanımı",
-        "id": 9,
-        "links": [],
-        "title": "Analiz 9: Node CPU Kullanımı (%)",
-        "vizConfig": {
-          "group": "timeseries",
-          "kind": "VizConfig",
-          "spec": {
-            "fieldConfig": {
-              "defaults": {
-                "unit": "percent",
-                "thresholds": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 70
-                    },
-                    {
-                      "color": "red",
-                      "value": 85
-                    }
-                  ]
-                }
-              },
-              "overrides": []
-            },
-            "options": {}
-          },
-          "version": "13.0.1"
-        }
-      }
     }
   },
   "layout": {
@@ -1165,7 +1217,8 @@
     "thesis",
     "autoscaling",
     "analysis",
-    "exported_endpoint-fixed"
+    "exported_endpoint-fixed",
+    "autoscaler-line"
   ],
   "timeSettings": {
     "autoRefresh": "5s",

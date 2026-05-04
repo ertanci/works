@@ -38,10 +38,9 @@ POST_SCALE_DOWN_STABILIZATION_SECONDS="${POST_SCALE_DOWN_STABILIZATION_SECONDS:-
 SCALE_DOWN_TIMEOUT_SECONDS="${SCALE_DOWN_TIMEOUT_SECONDS:-600}"
 SCALE_DOWN_CHECK_INTERVAL_SECONDS="${SCALE_DOWN_CHECK_INTERVAL_SECONDS:-10}"
 
-DELAY_FACTOR="${DELAY_FACTOR:-1.3}"
-CPU_FACTOR="${CPU_FACTOR:-1.3}"
-ERROR_FACTOR="${ERROR_FACTOR:-1.3}"
-RESULT_FILE="$ROOT_DIR/../results/${autoscaler}_Set${set_no}_${target_vus}VUs.json"
+DELAY_FACTOR="${DELAY_FACTOR:-1.2}"
+CPU_FACTOR="${CPU_FACTOR:-1.2}"
+ERROR_FACTOR="${ERROR_FACTOR:-1}"
 
 timestamp() {
   date +"%Y-%m-%d %H:%M:%S"
@@ -149,7 +148,8 @@ run_load_test() {
   target_vus="$3"
 
   log "START LOAD | autoscaler=${autoscaler} | set=${set_no}/${SETS} | target_vus=${target_vus}"
-
+  RESULT_FILE="$ROOT_DIR/../results/${autoscaler}_Set${set_no}_${target_vus}VUs.json"
+  
   URL="$TARGET_URL" \
   TARGET_VUS="$target_vus" \
   DELAY_FACTOR="$DELAY_FACTOR" \
