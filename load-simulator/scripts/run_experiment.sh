@@ -23,7 +23,7 @@ NAMESPACE="default"
 HPA_FILE="$ROOT_DIR/../autoscale-test-service/hpa.yaml"
 KEDA_FILE="$ROOT_DIR/../autoscale-test-service/keda-slo.yaml"
 
-LOAD_SCRIPT="$ROOT_DIR/../k6/step-load-test.js"
+LOAD_SCRIPT="$ROOT_DIR/../k6/common-load-test.js"
 
 SERVICE_URL="${SERVICE_URL:-http://localhost:3001/health}"
 TARGET_URL="${URL:-http://localhost:3001}"
