@@ -61,10 +61,10 @@ delete_autoscalers() {
 check_app_health() {
   log "Checking app health: $SERVICE_URL"
 
-  for i in {1..30}; do
+  for i in $(seq 1 30); do
     STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL" || true)
 
-    if [ "$STATUS" == "200" ]; then
+    if [ "$STATUS" = "200" ]; then
       log "App is healthy"
       return 0
     fi
