@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: autoscale-test-service
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 50
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 0
