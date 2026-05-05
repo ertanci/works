@@ -30,10 +30,11 @@ TARGET_URL="${URL:-http://localhost:3001}"
 
 SETS="${SETS:-1}"
 TARGETS="${TARGETS:-50 100 200 400}"
+EXPERIMENT_DATE=$(date +"%Y%m%d_%H%M%S")
 
 INITIAL_STABILIZATION_SECONDS="${INITIAL_STABILIZATION_SECONDS:-60}"
 AUTOSCALER_STABILIZATION_SECONDS="${AUTOSCALER_STABILIZATION_SECONDS:-30}"
-POST_SCALE_DOWN_STABILIZATION_SECONDS="${POST_SCALE_DOWN_STABILIZATION_SECONDS:-60}"
+POST_SCALE_DOWN_STABILIZATION_SECONDS="${POST_SCALE_DOWN_STABILIZATION_SECONDS:-120}"
 
 SCALE_DOWN_TIMEOUT_SECONDS="${SCALE_DOWN_TIMEOUT_SECONDS:-600}"
 SCALE_DOWN_CHECK_INTERVAL_SECONDS="${SCALE_DOWN_CHECK_INTERVAL_SECONDS:-10}"
@@ -148,14 +149,14 @@ run_load_test() {
   target_vus="$3"
 
   log "START LOAD | autoscaler=${autoscaler} | set=${set_no}/${SETS} | target_vus=${target_vus}"
-  RESULT_FILE="$ROOT_DIR/../results/${autoscaler}_Set${set_no}_${target_vus}VUs.json"
+  RESULT_FILE="$ROOT_DIR/../results/${EXPERIMENT_DATE}_${autoscaler}_Set${set_no}_${target_vus}VUs.json"
   
   URL="$TARGET_URL" \
   TARGET_VUS="$target_vus" \
   DELAY_FACTOR="$DELAY_FACTOR" \
   CPU_FACTOR="$CPU_FACTOR" \
   ERROR_FACTOR="$ERROR_FACTOR" \
-  k6 run --out json="$RESULT_FILE" "$LOAD_SCRIPT" 
+  k6 run --summary-export "$RESULT_FILE" "$LOAD_SCRIPT" 
 
   log "END LOAD | autoscaler=${autoscaler} | set=${set_no}/${SETS} | target_vus=${target_vus}"
 }
