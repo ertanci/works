@@ -17,6 +17,10 @@ set -e
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+DATA_DIR="$ROOT_DIR/../results/metrics"
+TIMELINE_FILE="$DATA_DIR/experiment_timeline.csv"
+mkdir -p "$DATA_DIR"
+
 APP_NAME="autoscale-test-service"
 NAMESPACE="default"
 
@@ -50,6 +54,26 @@ timestamp() {
 log() {
   echo ""
   echo "[$(timestamp)] $1"
+}
+
+init_timeline_file() {
+  if [ ! -f "$TIMELINE_FILE" ]; then
+    echo "run_id,scenario,autoscaler,set_no,target_vus,baseline_vus,spike_target_vus,start_ts,end_ts" > "$TIMELINE_FILE"
+  fi
+}
+
+write_timeline_event() {
+  run_id="$1"
+  scenario="$2"
+  autoscaler="$3"
+  set_no="$4"
+  target_vus="$5"
+  baseline_vus="$6"
+  spike_target_vus="$7"
+  start_ts="$8"
+  end_ts="$9"
+
+  echo "${run_id},${scenario},${autoscaler},${set_no},${target_vus},${baseline_vus},${spike_target_vus},${start_ts},${end_ts}" >> "$TIMELINE_FILE"
 }
 
 delete_autoscalers() {
@@ -149,14 +173,32 @@ run_load_test() {
   target_vus="$3"
 
   log "START LOAD | autoscaler=${autoscaler} | set=${set_no}/${SETS} | target_vus=${target_vus}"
-  RESULT_FILE="$ROOT_DIR/../results/${EXPERIMENT_DATE}_${autoscaler}_Set${set_no}_${target_vus}VUs.json"
   
+  RUN_ID="$(date +%Y%m%d_%H%M%S)_${autoscaler}_Set${set_no}_${target_vus}VUs"
+  RESULT_DIR="$ROOT_DIR/../results/k6/step-load"
+  mkdir -p "$RESULT_DIR"
+  RESULT_FILE="$RESULT_DIR/${RUN_ID}_summary.json"
+  START_TS="$(date +%s)"
+
   URL="$TARGET_URL" \
   TARGET_VUS="$target_vus" \
   DELAY_FACTOR="$DELAY_FACTOR" \
   CPU_FACTOR="$CPU_FACTOR" \
   ERROR_FACTOR="$ERROR_FACTOR" \
   k6 run --summary-export "$RESULT_FILE" "$LOAD_SCRIPT" 
+
+  END_TS="$(date +%s)"
+
+  write_timeline_event \
+    "$RUN_ID" \
+    "step-load" \
+    "$autoscaler" \
+    "$set_no" \
+    "$target_vus" \
+    "0" \
+    "0" \
+    "$START_TS" \
+    "$END_TS"
 
   log "END LOAD | autoscaler=${autoscaler} | set=${set_no}/${SETS} | target_vus=${target_vus}"
 }
@@ -203,15 +245,17 @@ if [ ! -f "$KEDA_FILE" ]; then
   exit 1
 fi
 
-delete_autoscalers
-reset_app_to_one_replica
-apply_hpa
-run_experiment_for_autoscaler "HPA"
+init_timeline_file
 
 delete_autoscalers
 reset_app_to_one_replica
 apply_keda
 run_experiment_for_autoscaler "KEDA"
+
+delete_autoscalers
+reset_app_to_one_replica
+apply_hpa
+run_experiment_for_autoscaler "HPA"
 
 # Final cleanup is optional.
 # delete_autoscalers

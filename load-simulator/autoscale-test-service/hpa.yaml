@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: autoscale-test-service
   minReplicas: 1
-  maxReplicas: 50
+  maxReplicas: 60
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 0
@@ -34,4 +34,4 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 70
+          averageUtilization: 80
