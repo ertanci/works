@@ -4,10 +4,37 @@ import requests
 import time
 from pathlib import Path
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 
 LATENCY_SLO_SECONDS = 0.5
 ERROR_SLO_RATE = 0.05
+
+
+def parse_datetime_to_ts(value: str, timezone_name: str) -> int:
+    """
+    Converts a datetime string to Unix timestamp.
+
+    Accepted formats:
+      - 2026-05-06 01:00:00
+      - 2026-05-06T01:00:00
+      - 2026-05-06T01:00:00+03:00
+      - 2026-05-06T01:00:00Z
+
+    If timezone information is not included in the value,
+    the timezone_name parameter is used.
+    """
+    value = value.strip()
+
+    if value.endswith("Z"):
+        value = value[:-1] + "+00:00"
+
+    dt = datetime.fromisoformat(value)
+
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=ZoneInfo(timezone_name))
+
+    return int(dt.timestamp())
 
 
 def query_range(prom_url, query, start_ts, end_ts, step):
@@ -79,18 +106,33 @@ def main():
     parser = argparse.ArgumentParser(description="Export Prometheus range metrics to a single CSV")
 
     parser.add_argument("--prom-url", default="http://localhost:9090")
-    parser.add_argument("--output", default="data/raw/metrics_all.csv")
-    parser.add_argument("--timeline", default="data/raw/experiment_timeline.csv")
+    parser.add_argument("--output", default="results/metrics/metrics_all.csv")
+    parser.add_argument("--timeline", default="results/metrics/experiment_timeline.csv")
 
+    # Option 1: Export a fixed date/time range.
+    parser.add_argument("--start", default=None, help="Start datetime, e.g. '2026-05-06 01:00:00'")
+    parser.add_argument("--end", default=None, help="End datetime, e.g. '2026-05-06 06:30:00'")
+    parser.add_argument("--timezone", default="Europe/Istanbul", help="Timezone used when --start/--end have no offset")
+
+    # Option 2: Export recent data using lookback.
     parser.add_argument("--lookback-minutes", type=int, default=120)
 
-    # 5 saniye önerilir. 5 dakika istersen 300 ver.
+    # 5 seconds is recommended. Use 300 for 5 minutes.
     parser.add_argument("--step", type=int, default=5)
 
     args = parser.parse_args()
 
-    end_ts = int(time.time())
-    start_ts = end_ts - (args.lookback_minutes * 60)
+    if args.start and args.end:
+        start_ts = parse_datetime_to_ts(args.start, args.timezone)
+        end_ts = parse_datetime_to_ts(args.end, args.timezone)
+    elif args.start or args.end:
+        raise ValueError("Both --start and --end must be provided together.")
+    else:
+        end_ts = int(time.time())
+        start_ts = end_ts - (args.lookback_minutes * 60)
+
+    if start_ts >= end_ts:
+        raise ValueError("--start must be earlier than --end")
 
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -195,7 +237,7 @@ def main():
         '''
     }
 
-    print(f"Exporting Prometheus metrics")
+    print("Exporting Prometheus metrics")
     print(f"Prometheus URL: {args.prom_url}")
     print(f"Start UTC: {datetime.fromtimestamp(start_ts, timezone.utc).isoformat()}")
     print(f"End UTC:   {datetime.fromtimestamp(end_ts, timezone.utc).isoformat()}")

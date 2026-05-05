@@ -249,13 +249,13 @@ init_timeline_file
 
 delete_autoscalers
 reset_app_to_one_replica
-apply_keda
-run_experiment_for_autoscaler "KEDA"
+apply_hpa
+run_experiment_for_autoscaler "HPA"
 
 delete_autoscalers
 reset_app_to_one_replica
-apply_hpa
-run_experiment_for_autoscaler "HPA"
+apply_keda
+run_experiment_for_autoscaler "KEDA"
 
 # Final cleanup is optional.
 # delete_autoscalers

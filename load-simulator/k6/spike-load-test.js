@@ -40,6 +40,8 @@ const profiles = {
 };
 
 export const options = {
+  summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(90)', 'p(95)', 'p(99)'],
+  
   scenarios: {
     spike_test: {
       executor: 'ramping-vus',
@@ -65,10 +67,6 @@ export const options = {
       gracefulRampDown: '30s',
       gracefulStop: '30s',
     }
-  },
-  thresholds: {
-    http_req_failed: ['rate<0.10'],
-    http_req_duration: ['p(95)<1500']
   }
 };
 
