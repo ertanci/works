@@ -35,7 +35,7 @@ spec:
     - type: prometheus
       metadata:
         serverAddress: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-        metricName: ats_in_progress_requests
+        metricName: http_requests_in_progress
         query: |
           sum(http_requests_in_progress{exported_endpoint!="/metrics", exported_endpoint!="/health"})
         threshold: "1.5"
