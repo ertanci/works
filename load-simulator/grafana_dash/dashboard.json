@@ -1084,6 +1084,142 @@
           "version": "13.0.1"
         }
       }
+    },
+    "panel-7": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": {
+                      "name": "prometheus"
+                    },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "sum(container_memory_working_set_bytes{namespace=\"default\",pod=~\"autoscale-test-service-.*\",container=\"ats\"}) / 1024 / 1024",
+                      "legendFormat": "Toplam Memory (MiB)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": {
+                      "name": "prometheus"
+                    },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "avg(container_memory_working_set_bytes{namespace=\"default\",pod=~\"autoscale-test-service-.*\",container=\"ats\"}) / 1024 / 1024",
+                      "legendFormat": "Pod Başına Ortalama Memory (MiB)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "B"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "autoscale-test-service container memory working set değerini gösterir. Toplam memory tüketimi ve pod başına ortalama memory birlikte izlenebilir.",
+        "id": 7,
+        "links": [],
+        "title": "Analiz 7: Memory Tüketimi (MiB)",
+        "vizConfig": {
+          "group": "timeseries",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "Memory (MiB)",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "showValues": false,
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "options": {
+              "annotations": {
+                "clustering": -1,
+                "multiLane": false
+              },
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "hideZeros": false,
+                "mode": "single",
+                "sort": "none"
+              }
+            }
+          },
+          "version": "13.0.1"
+        }
+      }
     }
   },
   "layout": {
@@ -1206,6 +1342,19 @@
             "x": 16,
             "y": 24
           }
+        },
+        {
+          "kind": "GridLayoutItem",
+          "spec": {
+            "element": {
+              "kind": "ElementReference",
+              "name": "panel-7"
+            },
+            "height": 8,
+            "width": 24,
+            "x": 0,
+            "y": 32
+          }
         }
       ]
     }
@@ -1218,7 +1367,9 @@
     "autoscaling",
     "analysis",
     "exported_endpoint-fixed",
-    "autoscaler-line"
+    "autoscaler-line",
+    "memory",
+    "resource-efficiency"
   ],
   "timeSettings": {
     "autoRefresh": "5s",
@@ -1240,6 +1391,6 @@
     "timezone": "browser",
     "to": "now"
   },
-  "title": "Tez-Analiz",
+  "title": "Tez-Analiz-Memory",
   "variables": []
 }

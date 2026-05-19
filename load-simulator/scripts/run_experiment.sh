@@ -32,7 +32,7 @@ LOAD_SCRIPT="$ROOT_DIR/../k6/common-load-test.js"
 SERVICE_URL="${SERVICE_URL:-http://localhost:3001/health}"
 TARGET_URL="${URL:-http://localhost:3001}"
 
-SETS="${SETS:-1}"
+SETS="${SETS:-5}"
 TARGETS="${TARGETS:-50 100 200 400}"
 EXPERIMENT_DATE=$(date +"%Y%m%d_%H%M%S")
 

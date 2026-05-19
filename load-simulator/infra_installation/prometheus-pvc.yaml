@@ -1,0 +1,17 @@
+prometheus:
+  prometheusSpec:
+    retention: 150d
+    retentionSize: 50GB
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 60Gi
+
+grafana:
+  persistence:
+    enabled: true
+    size: 10Gi

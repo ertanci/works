@@ -1,0 +1,133 @@
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+Live ML autoscaling monitor started.
+Model: mlp
+Prometheus: http://127.0.0.1:19090
+Deployment: default/autoscale-test-service
+Mode: APPLY SCALE
+Interval: 5s
+Scale-up cooldown: 15s
+Scale-down cooldown: 60s
+Min change: 1 pod
+HPA-like policy: False
+SLO thresholds: p95>0.5s OR error_rate>0.05
+Idle guard: True (rps<=0.5, in_progress<=0.5, samples=2)
+
+[2026-05-19T20:48:01.333353+00:00] rps=0.00 p95=0.000s err=0.0000 cpu=2.0m inflight=0.0 current=1 desired=1 ref=1 raw=0.13 model_rec=1 recommended=1 target=1 idle=1/1 idle_guard=0 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:06.365772+00:00] rps=0.00 p95=0.000s err=0.0000 cpu=2.5m inflight=0.0 current=1 desired=1 ref=1 raw=0.15 model_rec=1 recommended=1 target=1 idle=1/2 idle_guard=1 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:11.415599+00:00] rps=0.00 p95=0.000s err=0.0000 cpu=2.6m inflight=0.0 current=1 desired=1 ref=1 raw=0.15 model_rec=1 recommended=1 target=1 idle=1/3 idle_guard=1 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:19.464047+00:00] rps=0.34 p95=0.098s err=0.0000 cpu=9.1m inflight=0.0 current=1 desired=1 ref=1 raw=1.28 model_rec=2 recommended=1 target=1 idle=1/4 idle_guard=1 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:24.490592+00:00] rps=1.09 p95=0.098s err=0.0000 cpu=11.8m inflight=0.0 current=1 desired=1 ref=1 raw=0.85 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:29.568064+00:00] rps=1.85 p95=0.213s err=0.0000 cpu=11.8m inflight=0.0 current=1 desired=1 ref=1 raw=0.13 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:34.604143+00:00] rps=3.56 p95=0.400s err=0.0133 cpu=8.9m inflight=1.0 current=1 desired=1 ref=1 raw=-1.13 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:39.654771+00:00] rps=4.77 p95=0.465s err=0.0093 cpu=94.9m inflight=1.0 current=1 desired=1 ref=1 raw=0.34 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=none slo=0 action=no_scale_same_replicas
+[2026-05-19T20:48:44.702114+00:00] rps=6.22 p95=0.541s err=0.0136 cpu=104.4m inflight=15.0 current=1 desired=1 ref=1 raw=0.42 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:48:49.737149+00:00] rps=7.65 p95=0.733s err=0.0246 cpu=152.6m inflight=23.0 current=1 desired=1 ref=1 raw=1.18 model_rec=2 recommended=2 target=2 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_2
+[2026-05-19T20:48:58.139035+00:00] rps=10.61 p95=0.965s err=0.0314 cpu=189.4m inflight=7.0 current=1 desired=1 ref=1 raw=-2.86 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:49:03.195423+00:00] rps=11.85 p95=0.966s err=0.0330 cpu=170.4m inflight=7.0 current=2 desired=2 ref=2 raw=-3.22 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:49:08.234528+00:00] rps=13.78 p95=0.963s err=0.0321 cpu=249.1m inflight=27.0 current=2 desired=2 ref=2 raw=0.84 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:49:13.281581+00:00] rps=17.23 p95=0.961s err=0.0320 cpu=273.7m inflight=2.0 current=2 desired=2 ref=2 raw=-0.36 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:49:18.385351+00:00] rps=19.79 p95=0.957s err=0.0321 cpu=304.5m inflight=13.0 current=2 desired=2 ref=2 raw=1.87 model_rec=2 recommended=2 target=2 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:49:23.447811+00:00] rps=21.98 p95=0.956s err=0.0328 cpu=299.5m inflight=31.0 current=2 desired=2 ref=2 raw=3.90 model_rec=4 recommended=4 target=4 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_4
+[2026-05-19T20:49:31.645325+00:00] rps=23.09 p95=0.962s err=0.0368 cpu=378.4m inflight=32.0 current=2 desired=2 ref=2 raw=4.86 model_rec=5 recommended=5 target=5 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:49:36.681338+00:00] rps=24.86 p95=0.961s err=0.0353 cpu=390.1m inflight=2.0 current=4 desired=4 ref=4 raw=5.49 model_rec=6 recommended=6 target=6 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:49:41.742506+00:00] rps=26.51 p95=0.960s err=0.0340 cpu=373.1m inflight=3.0 current=4 desired=4 ref=4 raw=4.79 model_rec=5 recommended=5 target=5 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_5
+[2026-05-19T20:49:46.970526+00:00] rps=26.60 p95=0.947s err=0.0317 cpu=382.3m inflight=38.0 current=4 desired=4 ref=4 raw=6.42 model_rec=7 recommended=7 target=7 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:49:52.000569+00:00] rps=28.85 p95=0.947s err=0.0342 cpu=499.1m inflight=1.0 current=4 desired=4 ref=4 raw=7.78 model_rec=8 recommended=8 target=8 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:49:57.101265+00:00] rps=29.79 p95=0.945s err=0.0336 cpu=523.3m inflight=0.0 current=4 desired=4 ref=4 raw=7.10 model_rec=8 recommended=8 target=8 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_8
+[2026-05-19T20:50:05.496422+00:00] rps=28.77 p95=0.944s err=0.0335 cpu=506.2m inflight=19.0 current=4 desired=4 ref=4 raw=7.59 model_rec=8 recommended=8 target=8 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:50:10.589272+00:00] rps=28.62 p95=0.941s err=0.0349 cpu=514.3m inflight=35.0 current=8 desired=8 ref=8 raw=8.46 model_rec=9 recommended=9 target=9 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:50:15.657664+00:00] rps=28.56 p95=0.945s err=0.0369 cpu=547.6m inflight=1.0 current=8 desired=8 ref=8 raw=10.62 model_rec=11 recommended=11 target=11 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_11
+[2026-05-19T20:50:21.073425+00:00] rps=28.91 p95=0.948s err=0.0383 cpu=509.1m inflight=5.0 current=8 desired=8 ref=8 raw=10.88 model_rec=11 recommended=11 target=11 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:50:26.129977+00:00] rps=29.83 p95=0.949s err=0.0394 cpu=499.4m inflight=18.0 current=8 desired=8 ref=8 raw=9.19 model_rec=10 recommended=10 target=10 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:50:31.220196+00:00] rps=29.61 p95=0.950s err=0.0394 cpu=487.6m inflight=7.0 current=8 desired=8 ref=8 raw=11.52 model_rec=12 recommended=12 target=12 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_12
+[2026-05-19T20:50:35.633597+00:00] rps=29.90 p95=0.950s err=0.0426 cpu=545.0m inflight=3.0 current=11 desired=12 ref=12 raw=16.39 model_rec=17 recommended=17 target=17 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:50:40.672259+00:00] rps=30.42 p95=0.950s err=0.0466 cpu=577.4m inflight=3.0 current=11 desired=12 ref=12 raw=20.98 model_rec=21 recommended=21 target=21 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:50:45.704295+00:00] rps=30.84 p95=0.948s err=0.0465 cpu=593.9m inflight=15.0 current=11 desired=12 ref=12 raw=18.99 model_rec=19 recommended=19 target=19 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:50:50.730982+00:00] rps=30.58 p95=0.947s err=0.0469 cpu=568.0m inflight=32.0 current=11 desired=12 ref=12 raw=11.96 model_rec=12 recommended=12 target=12 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:50:55.770400+00:00] rps=30.56 p95=0.948s err=0.0458 cpu=576.4m inflight=5.0 current=11 desired=12 ref=12 raw=19.95 model_rec=20 recommended=20 target=20 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_20
+[2026-05-19T20:51:01.017289+00:00] rps=32.75 p95=0.947s err=0.0457 cpu=502.6m inflight=0.0 current=11 desired=12 ref=12 raw=18.45 model_rec=19 recommended=19 target=19 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_updeployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+
+[2026-05-19T20:51:06.049664+00:00] rps=33.07 p95=0.948s err=0.0442 cpu=624.4m inflight=1.0 current=20 desired=20 ref=20 raw=20.88 model_rec=21 recommended=21 target=21 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:51:11.077960+00:00] rps=32.99 p95=0.946s err=0.0448 cpu=573.5m inflight=20.0 current=20 desired=20 ref=20 raw=16.22 model_rec=17 recommended=17 target=17 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:51:16.109486+00:00] rps=32.84 p95=0.942s err=0.0405 cpu=672.9m inflight=37.0 current=20 desired=20 ref=20 raw=11.64 model_rec=12 recommended=12 target=12 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:51:21.165032+00:00] rps=33.25 p95=0.943s err=0.0384 cpu=634.6m inflight=4.0 current=20 desired=20 ref=20 raw=15.01 model_rec=16 recommended=16 target=16 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:51:26.200244+00:00] rps=40.78 p95=0.928s err=0.0317 cpu=660.4m inflight=54.0 current=20 desired=20 ref=20 raw=8.54 model_rec=9 recommended=9 target=9 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:51:31.237957+00:00] rps=65.14 p95=0.898s err=0.0207 cpu=747.8m inflight=18.0 current=20 desired=20 ref=20 raw=23.15 model_rec=24 recommended=24 target=24 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_24
+[2026-05-19T20:51:36.638635+00:00] rps=88.42 p95=0.870s err=0.0187 cpu=1086.5m inflight=77.0 current=20 desired=24 ref=24 raw=13.63 model_rec=14 recommended=14 target=14 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:51:43.410731+00:00] rps=113.65 p95=0.870s err=0.0182 cpu=1418.9m inflight=68.0 current=20 desired=24 ref=24 raw=17.19 model_rec=18 recommended=18 target=18 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:51:48.469116+00:00] rps=137.76 p95=0.868s err=0.0261 cpu=2314.7m inflight=90.0 current=20 desired=24 ref=24 raw=24.37 model_rec=25 recommended=25 target=25 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_25
+[2026-05-19T20:51:53.829853+00:00] rps=163.33 p95=0.859s err=0.0288 cpu=2747.0m inflight=100.0 current=20 desired=24 ref=24 raw=23.41 model_rec=24 recommended=24 target=24 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:51:58.875269+00:00] rps=185.74 p95=0.865s err=0.0302 cpu=3549.3m inflight=93.0 current=20 desired=24 ref=24 raw=28.66 model_rec=29 recommended=29 target=29 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:52:03.922967+00:00] rps=209.35 p95=0.894s err=0.0293 cpu=3805.5m inflight=50.0 current=20 desired=24 ref=24 raw=34.78 model_rec=35 recommended=35 target=35 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_35
+[2026-05-19T20:52:09.314943+00:00] rps=232.93 p95=0.892s err=0.0302 cpu=4991.9m inflight=82.0 current=25 desired=35 ref=35 raw=40.36 model_rec=41 recommended=41 target=41 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:52:16.309281+00:00] rps=257.72 p95=0.874s err=0.0333 cpu=5491.6m inflight=127.0 current=25 desired=35 ref=35 raw=46.28 model_rec=47 recommended=47 target=47 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:52:21.364658+00:00] rps=272.61 p95=0.898s err=0.0350 cpu=5605.6m inflight=85.0 current=25 desired=35 ref=35 raw=45.92 model_rec=46 recommended=46 target=46 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_46
+[2026-05-19T20:52:26.739741+00:00] rps=279.82 p95=0.910s err=0.0358 cpu=6043.8m inflight=42.0 current=25 desired=35 ref=35 raw=50.34 model_rec=51 recommended=51 target=51 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:52:31.789409+00:00] rps=281.07 p95=0.921s err=0.0381 cpu=6262.8m inflight=55.0 current=25 desired=35 ref=35 raw=51.59 model_rec=52 recommended=52 target=52 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:52:36.847635+00:00] rps=280.87 p95=0.932s err=0.0421 cpu=6184.9m inflight=111.0 current=25 desired=35 ref=35 raw=52.71 model_rec=53 recommended=53 target=53 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_53
+[2026-05-19T20:52:42.220978+00:00] rps=292.07 p95=0.930s err=0.0432 cpu=6358.9m inflight=139.0 current=46 desired=53 ref=53 raw=58.95 model_rec=59 recommended=59 target=59 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:52:47.268795+00:00] rps=292.73 p95=0.968s err=0.0429 cpu=6304.5m inflight=96.0 current=46 desired=53 ref=53 raw=56.70 model_rec=57 recommended=57 target=57 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:52:54.570668+00:00] rps=278.89 p95=0.992s err=0.0432 cpu=5706.8m inflight=48.0 current=46 desired=53 ref=53 raw=54.95 model_rec=55 recommended=55 target=55 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_55
+[2026-05-19T20:52:59.939811+00:00] rps=277.48 p95=0.965s err=0.0452 cpu=6080.6m inflight=61.0 current=46 desired=53 ref=53 raw=56.06 model_rec=57 recommended=57 target=57 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:53:04.988319+00:00] rps=276.89 p95=0.993s err=0.0461 cpu=5659.3m inflight=111.0 current=46 desired=53 ref=53 raw=54.54 model_rec=55 recommended=55 target=55 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:53:10.032365+00:00] rps=278.80 p95=0.990s err=0.0454 cpu=5898.4m inflight=109.0 current=46 desired=53 ref=53 raw=54.94 model_rec=55 recommended=55 target=55 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_55
+[2026-05-19T20:53:15.413533+00:00] rps=289.15 p95=0.985s err=0.0454 cpu=6205.9m inflight=57.0 current=55 desired=55 ref=55 raw=59.21 model_rec=60 recommended=60 target=60 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:53:20.456893+00:00] rps=287.74 p95=1.003s err=0.0461 cpu=6118.6m inflight=78.0 current=55 desired=55 ref=55 raw=58.72 model_rec=59 recommended=59 target=59 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:53:27.447614+00:00] rps=276.76 p95=1.099s err=0.0464 cpu=6031.8m inflight=33.0 current=55 desired=55 ref=55 raw=62.15 model_rec=60 recommended=60 target=60 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_60
+[2026-05-19T20:53:32.835331+00:00] rps=277.99 p95=1.119s err=0.0452 cpu=5830.2m inflight=108.0 current=55 desired=55 ref=55 raw=57.64 model_rec=58 recommended=58 target=58 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:53:37.899535+00:00] rps=278.72 p95=1.129s err=0.0444 cpu=5795.3m inflight=98.0 current=55 desired=55 ref=55 raw=57.14 model_rec=58 recommended=58 target=58 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=no_scale_cooldown_scale_up
+[2026-05-19T20:53:42.941864+00:00] rps=278.78 p95=1.081s err=0.0443 cpu=6175.4m inflight=44.0 current=60 desired=60 ref=60 raw=59.05 model_rec=60 recommended=60 target=60 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:53:47.984772+00:00] rps=288.30 p95=0.986s err=0.0448 cpu=6085.5m inflight=79.0 current=60 desired=60 ref=60 raw=57.46 model_rec=58 recommended=58 target=58 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:53:53.038000+00:00] rps=289.91 p95=1.031s err=0.0442 cpu=6356.1m inflight=172.0 current=60 desired=60 ref=60 raw=64.01 model_rec=60 recommended=60 target=60 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:54:00.453738+00:00] rps=279.17 p95=1.099s err=0.0434 cpu=6070.8m inflight=81.0 current=60 desired=60 ref=60 raw=56.97 model_rec=57 recommended=57 target=57 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:05.506190+00:00] rps=278.48 p95=1.112s err=0.0418 cpu=5930.9m inflight=72.0 current=60 desired=60 ref=60 raw=55.99 model_rec=56 recommended=56 target=56 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_downdeployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+deployment.apps/autoscale-test-service scaled
+
+[2026-05-19T20:54:10.546788+00:00] rps=277.91 p95=1.140s err=0.0421 cpu=5481.5m inflight=58.0 current=60 desired=60 ref=60 raw=56.14 model_rec=57 recommended=57 target=57 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:15.594653+00:00] rps=276.62 p95=1.177s err=0.0424 cpu=5863.4m inflight=72.0 current=60 desired=60 ref=60 raw=57.28 model_rec=58 recommended=58 target=58 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:20.639919+00:00] rps=282.71 p95=1.140s err=0.0427 cpu=5915.6m inflight=101.0 current=60 desired=60 ref=60 raw=57.05 model_rec=58 recommended=58 target=58 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:25.688501+00:00] rps=286.32 p95=1.061s err=0.0420 cpu=6075.6m inflight=109.0 current=60 desired=60 ref=60 raw=55.80 model_rec=56 recommended=56 target=56 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:30.725445+00:00] rps=285.94 p95=1.131s err=0.0407 cpu=5850.9m inflight=79.0 current=60 desired=60 ref=60 raw=56.58 model_rec=57 recommended=57 target=57 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=scale_down_to_57
+[2026-05-19T20:54:38.718584+00:00] rps=271.19 p95=1.173s err=0.0397 cpu=5802.1m inflight=57.0 current=60 desired=60 ref=60 raw=54.84 model_rec=55 recommended=55 target=55 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:43.767664+00:00] rps=271.88 p95=1.205s err=0.0402 cpu=5243.8m inflight=60.0 current=60 desired=60 ref=60 raw=54.45 model_rec=55 recommended=55 target=55 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:48.813744+00:00] rps=272.08 p95=1.146s err=0.0413 cpu=5471.1m inflight=127.0 current=57 desired=57 ref=57 raw=53.69 model_rec=54 recommended=54 target=54 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:53.863348+00:00] rps=268.93 p95=1.138s err=0.0407 cpu=5848.1m inflight=81.0 current=57 desired=57 ref=57 raw=53.83 model_rec=54 recommended=54 target=54 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:54:58.916900+00:00] rps=276.53 p95=1.047s err=0.0402 cpu=6042.7m inflight=37.0 current=57 desired=57 ref=57 raw=55.29 model_rec=56 recommended=56 target=56 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:03.958811+00:00] rps=265.10 p95=0.988s err=0.0396 cpu=5735.0m inflight=66.0 current=57 desired=57 ref=57 raw=49.20 model_rec=50 recommended=50 target=50 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:11.499314+00:00] rps=235.27 p95=0.993s err=0.0401 cpu=5682.2m inflight=12.0 current=57 desired=57 ref=57 raw=59.88 model_rec=60 recommended=60 target=60 idle=0/0 idle_guard=0 dir=scale_up slo=1 action=scale_up_to_60
+[2026-05-19T20:55:16.744628+00:00] rps=218.31 p95=0.970s err=0.0399 cpu=5116.3m inflight=45.0 current=57 desired=57 ref=57 raw=44.86 model_rec=45 recommended=45 target=45 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:21.786833+00:00] rps=195.11 p95=0.984s err=0.0396 cpu=4784.0m inflight=4.0 current=60 desired=60 ref=60 raw=60.73 model_rec=60 recommended=60 target=60 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:55:26.930036+00:00] rps=166.85 p95=0.976s err=0.0404 cpu=4252.1m inflight=2.0 current=60 desired=60 ref=60 raw=53.60 model_rec=54 recommended=54 target=54 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:31.975754+00:00] rps=155.44 p95=0.952s err=0.0418 cpu=3738.2m inflight=30.0 current=60 desired=60 ref=60 raw=40.66 model_rec=41 recommended=41 target=41 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:37.010418+00:00] rps=132.40 p95=0.945s err=0.0414 cpu=3478.2m inflight=12.0 current=60 desired=60 ref=60 raw=43.45 model_rec=44 recommended=44 target=44 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:44.535421+00:00] rps=94.16 p95=0.965s err=0.0370 cpu=2054.3m inflight=0.0 current=60 desired=60 ref=60 raw=37.48 model_rec=38 recommended=38 target=38 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:49.633210+00:00] rps=72.01 p95=0.957s err=0.0384 cpu=1581.1m inflight=1.0 current=60 desired=60 ref=60 raw=30.68 model_rec=31 recommended=31 target=31 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:54.687861+00:00] rps=54.32 p95=0.969s err=0.0412 cpu=1254.7m inflight=34.0 current=60 desired=60 ref=60 raw=25.34 model_rec=26 recommended=26 target=26 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:55:59.722144+00:00] rps=42.17 p95=0.991s err=0.0401 cpu=717.4m inflight=33.0 current=60 desired=60 ref=60 raw=19.21 model_rec=20 recommended=20 target=20 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:04.825862+00:00] rps=34.68 p95=0.956s err=0.0426 cpu=686.4m inflight=0.0 current=60 desired=60 ref=60 raw=18.98 model_rec=19 recommended=19 target=19 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:09.901316+00:00] rps=31.95 p95=0.960s err=0.0391 cpu=661.3m inflight=40.0 current=60 desired=60 ref=60 raw=12.52 model_rec=13 recommended=13 target=13 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:15.016744+00:00] rps=29.81 p95=0.958s err=0.0377 cpu=494.7m inflight=1.0 current=60 desired=60 ref=60 raw=11.27 model_rec=12 recommended=12 target=12 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=scale_down_to_12
+[2026-05-19T20:56:22.578269+00:00] rps=27.82 p95=0.979s err=0.0382 cpu=417.6m inflight=0.0 current=60 desired=60 ref=60 raw=9.47 model_rec=10 recommended=10 target=10 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:27.612909+00:00] rps=27.68 p95=0.978s err=0.0371 cpu=480.7m inflight=8.0 current=12 desired=12 ref=12 raw=9.85 model_rec=10 recommended=10 target=10 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:32.737220+00:00] rps=26.72 p95=0.980s err=0.0386 cpu=362.0m inflight=33.0 current=12 desired=12 ref=12 raw=6.39 model_rec=7 recommended=7 target=7 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:37.840976+00:00] rps=25.54 p95=0.983s err=0.0412 cpu=411.2m inflight=9.0 current=12 desired=12 ref=12 raw=11.49 model_rec=12 recommended=12 target=12 idle=0/0 idle_guard=0 dir=none slo=1 action=no_scale_same_replicas
+[2026-05-19T20:56:42.890837+00:00] rps=25.43 p95=0.979s err=0.0415 cpu=387.3m inflight=14.0 current=12 desired=12 ref=12 raw=10.56 model_rec=11 recommended=11 target=11 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:47.976901+00:00] rps=24.56 p95=0.978s err=0.0399 cpu=307.1m inflight=0.0 current=12 desired=12 ref=12 raw=8.13 model_rec=9 recommended=9 target=9 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:54.814415+00:00] rps=20.62 p95=0.980s err=0.0383 cpu=275.7m inflight=0.0 current=12 desired=12 ref=12 raw=4.48 model_rec=5 recommended=5 target=5 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:56:59.956030+00:00] rps=17.35 p95=0.984s err=0.0384 cpu=273.5m inflight=0.0 current=12 desired=12 ref=12 raw=2.72 model_rec=3 recommended=3 target=3 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:57:05.041900+00:00] rps=15.34 p95=0.988s err=0.0395 cpu=274.6m inflight=0.0 current=12 desired=12 ref=12 raw=2.46 model_rec=3 recommended=3 target=3 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_down
+[2026-05-19T20:57:10.107681+00:00] rps=11.86 p95=1.525s err=0.0343 cpu=276.2m inflight=0.0 current=12 desired=12 ref=12 raw=-2.24 model_rec=1 recommended=1 target=1 idle=0/0 idle_guard=0 dir=scale_down slo=1 action=no_scale_cooldown_scale_downdeployment.apps/autoscale-test-service scaled
