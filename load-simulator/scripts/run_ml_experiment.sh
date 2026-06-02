@@ -32,12 +32,14 @@ NAMESPACE="${NAMESPACE:-default}"
 
 STEP_LOAD_SCRIPT="${STEP_LOAD_SCRIPT:-$ROOT_DIR/../k6/common-load-test.js}"
 SPIKE_LOAD_SCRIPT="${SPIKE_LOAD_SCRIPT:-$ROOT_DIR/../k6/spike-load-test.js}"
+POISSON_LOAD_SCRIPT="${POISSON_LOAD_SCRIPT:-$ROOT_DIR/../k6/poisson-arrival-rate.js}"
+
 ML_SCRIPT="${ML_SCRIPT:-$ROOT_DIR/predict_live.py}"
 MODEL_FILE="${MODEL_FILE:-$ROOT_DIR/../models/best_model.joblib}"
 
 SERVICE_URL="${SERVICE_URL:-http://localhost:3001/health}"
 TARGET_URL="${URL:-http://localhost:3001}"
-PROM_URL="${PROM_URL:-http://127.0.0.1:19090}"
+PROM_URL="${PROM_URL:-http://localhost:9090}"
 
 # For quick validation, use SETS=1. For final thesis measurements, use SETS=5.
 SETS="${SETS:-1}"
@@ -45,6 +47,12 @@ TARGETS="${TARGETS:-50 100 200 400}"
 
 BASELINE_VUS="${BASELINE_VUS:-50}"
 SPIKE_TARGET_VUS="${SPIKE_TARGET_VUS:-400}"
+
+POISSON_MEAN_RPS="${POISSON_MEAN_RPS:-110}"
+POISSON_TOTAL_MINUTES="${POISSON_TOTAL_MINUTES:-18}"
+POISSON_STEP_SECONDS="${POISSON_STEP_SECONDS:-180}"
+POISSON_PRE_ALLOCATED_VUS="${POISSON_PRE_ALLOCATED_VUS:-300}"
+POISSON_MAX_VUS="${POISSON_MAX_VUS:-700}"
 
 INITIAL_STABILIZATION_SECONDS="${INITIAL_STABILIZATION_SECONDS:-60}"
 POST_SCALE_DOWN_STABILIZATION_SECONDS="${POST_SCALE_DOWN_STABILIZATION_SECONDS:-60}"
@@ -120,6 +128,11 @@ check_required_files() {
 
   if [ ! -f "$SPIKE_LOAD_SCRIPT" ]; then
     echo "ERROR: Spike load script not found: $SPIKE_LOAD_SCRIPT"
+    exit 1
+  fi
+
+  if [ ! -f "$POISSON_LOAD_SCRIPT" ]; then
+    echo "ERROR: Poisson load script not found: $POISSON_LOAD_SCRIPT"
     exit 1
   fi
 
@@ -371,6 +384,48 @@ run_spike_load_test() {
   log "END ML SPIKE LOAD | set=${set_no}/${SETS}"
 }
 
+run_poisson_load_test() {
+  set_no="$1"
+
+  log "START ML POISSON LOAD | set=${set_no}/${SETS} | mean_rps=${POISSON_MEAN_RPS}"
+
+  seed="$((3000 + set_no))"
+
+  run_id="$(date +%Y%m%d_%H%M%S)_ML_Poisson_Set${set_no}_Mean${POISSON_MEAN_RPS}RPS"
+  result_dir="$ROOT_DIR/../results/k6/poisson-arrival-rate"
+  mkdir -p "$result_dir"
+  result_file="$result_dir/${run_id}_summary.json"
+
+  start_ts="$(date +%s)"
+
+  URL="$TARGET_URL" \
+  MEAN_RPS="$POISSON_MEAN_RPS" \
+  TOTAL_MINUTES="$POISSON_TOTAL_MINUTES" \
+  STEP_SECONDS="$POISSON_STEP_SECONDS" \
+  PRE_ALLOCATED_VUS="$POISSON_PRE_ALLOCATED_VUS" \
+  MAX_VUS="$POISSON_MAX_VUS" \
+  DELAY_FACTOR="$DELAY_FACTOR" \
+  CPU_FACTOR="$CPU_FACTOR" \
+  ERROR_FACTOR="$ERROR_FACTOR" \
+  SEED="$seed" \
+  k6 run --summary-export "$result_file" "$POISSON_LOAD_SCRIPT"
+
+  end_ts="$(date +%s)"
+
+  write_timeline_event \
+    "$run_id" \
+    "poisson-arrival-rate" \
+    "ML" \
+    "$set_no" \
+    "$POISSON_MEAN_RPS" \
+    "0" \
+    "0" \
+    "$start_ts" \
+    "$end_ts"
+
+  log "END ML POISSON LOAD | set=${set_no}/${SETS}"
+}
+
 run_step_experiments() {
   log "=========================================="
   log "START ML STEP EXPERIMENT"
@@ -419,11 +474,35 @@ run_spike_experiments() {
   log "=========================================="
 }
 
+run_poisson_experiments() {
+  log "=========================================="
+  log "START ML POISSON EXPERIMENT"
+  log "=========================================="
+
+  for set_no in $(seq 1 "$SETS"); do
+    log "========== ML POISSON | SET ${set_no}/${SETS} =========="
+
+    delete_autoscalers
+    reset_app_to_one_replica
+    start_ml_autoscaler
+
+    run_poisson_load_test "$set_no"
+    wait_until_scaled_down_to_one
+
+    stop_ml_autoscaler
+  done
+
+  log "=========================================="
+  log "END ML POISSON EXPERIMENT"
+  log "=========================================="
+}
+
 log "ML experiment started"
 log "SETS=$SETS"
 log "TARGETS=$TARGETS"
 log "TARGET_URL=$TARGET_URL"
 log "PROM_URL=$PROM_URL"
+log "POISSON mean_rps=$POISSON_MEAN_RPS total_minutes=$POISSON_TOTAL_MINUTES step_seconds=$POISSON_STEP_SECONDS preAllocatedVUs=$POISSON_PRE_ALLOCATED_VUS maxVUs=$POISSON_MAX_VUS"
 log "ML direct scaling=$([ "$ML_HPA_LIKE_POLICY" = "true" ] && echo false || echo true)"
 log "ML cooldown up/down=${ML_SCALE_UP_COOLDOWN_SECONDS}/${ML_SCALE_DOWN_COOLDOWN_SECONDS}s"
 log "ML min-change=$ML_MIN_CHANGE"
@@ -439,6 +518,9 @@ init_timeline_file
 run_step_experiments
 sleep 60
 run_spike_experiments
+sleep 60
+
+run_poisson_experiments
 
 # Final cleanup.
 delete_autoscalers

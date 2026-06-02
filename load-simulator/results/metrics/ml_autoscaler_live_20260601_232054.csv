@@ -1,0 +1,6 @@
+timestamp_utc,model_name,rps,p95_latency,error_rate,cpu_mcores,in_progress_requests,current_pods,desired_replicas,sanitized_metrics,reference_replicas,idle_detected,idle_sample_count,idle_guard_applied,raw_prediction,recommended_pods,scale_target_pods,scale_direction,latency_slo_violation,error_slo_violation,slo_violation,cooldown_required_seconds,seconds_since_last_scale,action
+2026-06-02T14:29:29.573223+00:00,mlp,0.0,0.0,0.0,2.4262464327221016,0.0,1,1,p95_latency,1,1,21,1,0.14876773703018537,1,1,none,0,0,0,0,44.143,no_scale_same_replicas
+2026-06-02T14:29:34.616423+00:00,mlp,0.0,0.0,0.0,2.180072856404953,0.0,1,1,p95_latency,1,1,22,1,0.14071136207739848,1,1,none,0,0,0,0,49.161,no_scale_same_replicas
+2026-06-02T14:29:39.635630+00:00,mlp,0.0,0.0,0.0,2.8917570022558774,0.0,1,1,p95_latency,1,1,23,1,0.16400222217990174,1,1,none,0,0,0,0,54.202,no_scale_same_replicas
+2026-06-02T14:29:44.677265+00:00,mlp,0.0,0.0,0.0,3.027611583103999,0.0,1,1,p95_latency,1,1,24,1,0.16844825354825693,1,1,none,0,0,0,0,59.282,no_scale_same_replicas
+2026-06-02T14:29:49.762023+00:00,mlp,0.0,0.0,0.0,3.074041851733149,0.0,1,1,p95_latency,1,1,25,1,0.16996774909619522,1,1,none,0,0,0,0,64.322,no_scale_same_replicas
