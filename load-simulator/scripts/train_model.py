@@ -243,7 +243,7 @@ def main():
     parser.add_argument("--predictions-output", default="results/metrics/model_predictions.csv")
     parser.add_argument("--group-results-output", default="results/metrics/model_group_results.csv")
 
-    parser.add_argument("--rounding", choices=["round", "ceil", "floor"], default="round")
+    parser.add_argument("--rounding", choices=["round", "ceil", "floor"], default="ceil")
     parser.add_argument("--min-pods", type=int, default=1)
     parser.add_argument(
         "--max-pods",
