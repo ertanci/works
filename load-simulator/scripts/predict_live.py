@@ -442,6 +442,26 @@ def main():
             reference_replicas = desired_replicas if desired_replicas > 0 else current_pods
             reference_replicas = clamp(reference_replicas, args.min_pods, args.max_pods)
 
+            # ------------------------------------------------------------
+            # Safety guard 1:
+            # If SLO is violated, never scale down.
+            # During latency/error violation, reducing replicas can make the
+            # service unstable. Keep at least the current/reference replica count.
+            # ------------------------------------------------------------
+            if slo_violation:
+                recommended_pods = max(recommended_pods, reference_replicas)
+
+            # ------------------------------------------------------------
+            # Safety guard 2:
+            # Avoid aggressive scale-down while meaningful traffic is still active.
+            # This prevents sudden drops such as 60 -> 30 while requests are ongoing.
+            # ------------------------------------------------------------
+            if metrics["rps"] > 30 and recommended_pods < reference_replicas:
+                recommended_pods = max(
+                    recommended_pods,
+                    math.ceil(reference_replicas * 0.85)
+                )
+
             scale_target_pods = apply_hpa_like_policy(reference_replicas, recommended_pods, args)
             scale_target_pods = clamp(scale_target_pods, args.min_pods, args.max_pods)
 

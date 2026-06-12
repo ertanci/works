@@ -1,0 +1,108 @@
+Tez Çalışması İçin Önerilen Başlıklar
+
+Konu:
+Kubernetes ortamlarında HPA, KEDA ve makine öğrenmesi tabanlı otomatik ölçeklendirme yaklaşımlarının karşılaştırılması.
+
+Çalışmanın omurgası:
+Kubernetes üzerinde çalışan test servisi, k6 yük testleri, Prometheus metrikleri, HPA/KEDA deneyleri ve bu deneylerden üretilen veri setiyle eğitilen ML tabanlı autoscaler karşılaştırması.
+
+1. Giriş
+- Problemin tanımı
+- Kubernetes ortamlarında otomatik ölçeklendirme ihtiyacı
+- CPU tabanlı ölçeklendirmenin sınırlılıkları
+- Tezin amacı ve kapsamı
+- Araştırma soruları
+- Tezin katkıları
+
+2. Literatür Taraması
+- Kubernetes ve container orchestration çalışmaları
+- Horizontal Pod Autoscaler yaklaşımları
+- KEDA ve event-driven autoscaling
+- SLO / servis kalitesi tabanlı ölçeklendirme
+- Makine öğrenmesi tabanlı autoscaling çalışmaları
+- Literatürdeki boşluk ve bu çalışmanın konumu
+
+3. Kuramsal Arka Plan
+- Kubernetes mimarisi: Pod, Deployment, Service
+- HPA çalışma mantığı
+- KEDA çalışma mantığı
+- Prometheus ile metrik toplama
+- k6 ile yük testi
+- Kullanılan ML modelleri: Linear Regression, SVR, MLP
+- Değerlendirme metrikleri: p95 latency, error rate, SLO ihlali, pod sayısı, CPU tüketimi, MAE, RMSE, R²
+
+4. Deneysel Sistem Tasarımı
+- FastAPI tabanlı test servisinin mimarisi
+- Kubernetes deployment ve servis yapısı
+- Prometheus ve Grafana entegrasyonu
+- HPA yapılandırması
+- KEDA yapılandırması
+- ML tabanlı autoscaler tasarımı
+- Yük testi senaryoları:
+  - step-load
+  - spike-load
+  - Poisson trafik
+- Deney akışı ve veri toplama süreci
+
+5. Veri Seti ve Makine Öğrenmesi Modeli
+- Toplanan metrikler:
+  - RPS
+  - p95 latency
+  - error rate
+  - CPU mcores
+  - in-progress requests
+- Hedef değişkenin tanımı: required_pods / desired_replicas
+- Eğitim verisinin HPA ve KEDA deneylerinden oluşturulması
+- Veri temizleme ve ön işleme
+- Eğitim/test ayrımı
+- Linear Regression, SVR ve MLP modellerinin eğitimi
+- Model performanslarının MAE, RMSE ve R² ile karşılaştırılması
+
+6. Deneyler ve Bulgular
+- HPA deney sonuçları
+- KEDA deney sonuçları
+- ML autoscaler deney sonuçları
+- Step-load senaryosu karşılaştırması
+- Spike-load senaryosu karşılaştırması
+- Poisson trafik senaryosu karşılaştırması
+- p95 latency karşılaştırması
+- error rate karşılaştırması
+- SLO ihlal süresi karşılaştırması
+- Ortalama pod sayısı / kaynak kullanımı karşılaştırması
+- CPU tüketimi karşılaştırması
+
+7. Tartışma
+- ML modelinin hangi senaryolarda avantaj sağladığı
+- HPA'nın güçlü ve zayıf yönleri
+- KEDA'nın güçlü ve zayıf yönleri
+- Eğitim verisinin HPA ve KEDA deneylerinden gelmesinin etkisi
+- ML modelinin ideal pod sayısını değil, öğrenilmiş autoscaling davranışını tahmin etmesi
+- Kaynak verimliliği ve servis kalitesi dengesi
+- Çalışmanın sınırlılıkları
+
+8. Sonuç ve Gelecek Çalışmalar
+- Genel sonuçların değerlendirilmesi
+- Tezin katkılarının özetlenmesi
+- En başarılı yaklaşımın senaryoya göre değişmesinin yorumlanması
+- Gelecekte yapılabilecekler:
+  - Daha fazla trafik tipi
+  - Gerçek uygulama yükleri
+  - KEDA'da latency/error-rate tabanlı trigger kullanımı
+  - Online learning
+  - Reinforcement learning
+  - Maliyet / enerji tüketimi analizi
+
+Ekler
+- Kubernetes YAML dosyaları
+- k6 test scriptleri
+- Prometheus sorguları
+- Model eğitim parametreleri
+- Deney sonuç tabloları
+- Grafikler
+- Proje kaynak kodu bağlantısı
+
+Danışmana anlatırken vurgulanacak ana eksenler:
+- Deneysel sistem tasarımı
+- Veri seti ve ML modeli
+- HPA-KEDA-ML karşılaştırmalı bulgular
+- Tartışma ve sınırlılıklar

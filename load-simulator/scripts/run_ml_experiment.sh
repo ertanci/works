@@ -42,7 +42,7 @@ TARGET_URL="${URL:-http://localhost:3001}"
 PROM_URL="${PROM_URL:-http://localhost:9090}"
 
 # For quick validation, use SETS=1. For final thesis measurements, use SETS=5.
-SETS="${SETS:-1}"
+SETS="${SETS:-5}"
 TARGETS="${TARGETS:-50 100 200 400}"
 
 BASELINE_VUS="${BASELINE_VUS:-50}"
