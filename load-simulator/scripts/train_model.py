@@ -225,8 +225,8 @@ def build_group_metrics(predictions_df):
 def main():
     parser = argparse.ArgumentParser(description="Train and evaluate ML-based Kubernetes autoscaling models")
 
-    parser.add_argument("--train", default="results/metrics/ml_train_set_1_4.csv")
-    parser.add_argument("--test", default="results/metrics/ml_test_set_5.csv")
+    parser.add_argument("--train", default="results/metrics/ml_train_all.csv")
+    parser.add_argument("--test", default="results/metrics/ml_test_all.csv")
 
     parser.add_argument(
         "--features",
@@ -239,6 +239,11 @@ def main():
     parser.add_argument("--target-column", default=DEFAULT_TARGET_COLUMN)
 
     parser.add_argument("--model-output", default="models/best_model.joblib")
+    parser.add_argument(
+        "--models-output-dir",
+        default="models",
+        help="Directory where each trained model artifact is saved separately.",
+    )
     parser.add_argument("--results-output", default="results/metrics/model_results.csv")
     parser.add_argument("--predictions-output", default="results/metrics/model_predictions.csv")
     parser.add_argument("--group-results-output", default="results/metrics/model_group_results.csv")
@@ -340,6 +345,27 @@ def main():
     best_model = trained_models[best_model_name]
 
     Path(args.model_output).parent.mkdir(parents=True, exist_ok=True)
+    models_output_dir = Path(args.models_output_dir)
+    models_output_dir.mkdir(parents=True, exist_ok=True)
+
+    model_artifacts = {}
+    for model_name, model in trained_models.items():
+        model_result = results_df[results_df["model"] == model_name].to_dict(orient="records")
+        artifact = {
+            "model_name": model_name,
+            "model": model,
+            "features": feature_columns,
+            "target": target_column,
+            "rounding": args.rounding,
+            "min_pods": args.min_pods,
+            "max_pods": max_pods,
+            "results": results_df.to_dict(orient="records"),
+            "model_result": model_result[0] if model_result else None,
+        }
+        artifact_path = models_output_dir / f"{model_name}_model.joblib"
+        joblib.dump(artifact, artifact_path)
+        model_artifacts[model_name] = str(artifact_path)
+
     joblib.dump(
         {
             "model_name": best_model_name,
@@ -350,6 +376,7 @@ def main():
             "min_pods": args.min_pods,
             "max_pods": max_pods,
             "results": results_df.to_dict(orient="records"),
+            "model_artifacts": model_artifacts,
         },
         args.model_output,
     )
@@ -360,6 +387,9 @@ def main():
     print(f"Predictions saved to: {args.predictions_output}")
     print(f"Group results saved to: {args.group_results_output}")
     print(f"Best model saved to: {args.model_output}")
+    print(f"Individual models saved to: {models_output_dir}")
+    for model_name, artifact_path in model_artifacts.items():
+        print(f"  {model_name}: {artifact_path}")
 
 
 if __name__ == "__main__":

@@ -35,14 +35,14 @@ SPIKE_LOAD_SCRIPT="${SPIKE_LOAD_SCRIPT:-$ROOT_DIR/../k6/spike-load-test.js}"
 POISSON_LOAD_SCRIPT="${POISSON_LOAD_SCRIPT:-$ROOT_DIR/../k6/poisson-arrival-rate.js}"
 
 ML_SCRIPT="${ML_SCRIPT:-$ROOT_DIR/predict_live.py}"
-MODEL_FILE="${MODEL_FILE:-$ROOT_DIR/../models/best_model.joblib}"
+MODEL_FILE="${MODEL_FILE:-$ROOT_DIR/../models/linear_regression_model.joblib}"
 
 SERVICE_URL="${SERVICE_URL:-http://localhost:3001/health}"
 TARGET_URL="${URL:-http://localhost:3001}"
 PROM_URL="${PROM_URL:-http://localhost:9090}"
 
 # For quick validation, use SETS=1. For final thesis measurements, use SETS=5.
-SETS="${SETS:-5}"
+SETS="${SETS:-1}"
 TARGETS="${TARGETS:-50 100 200 400}"
 
 BASELINE_VUS="${BASELINE_VUS:-50}"
@@ -81,8 +81,8 @@ ML_IDLE_IN_PROGRESS_THRESHOLD="${ML_IDLE_IN_PROGRESS_THRESHOLD:-0.5}"
 ML_IDLE_CONSECUTIVE_SAMPLES="${ML_IDLE_CONSECUTIVE_SAMPLES:-2}"
 
 EXPERIMENT_DATE="$(date +"%Y%m%d_%H%M%S")"
-ML_OUTPUT_CSV="${ML_OUTPUT_CSV:-$DATA_DIR/ml_autoscaler_live_${EXPERIMENT_DATE}.csv}"
-ML_LOG_FILE="${ML_LOG_FILE:-$DATA_DIR/ml_autoscaler_live_${EXPERIMENT_DATE}.log}"
+ML_OUTPUT_CSV="${ML_OUTPUT_CSV:-$DATA_DIR/linear_regression_model_autoscaler_live_${EXPERIMENT_DATE}.csv}"
+ML_LOG_FILE="${ML_LOG_FILE:-$DATA_DIR/linear_regression_model_autoscaler_live_${EXPERIMENT_DATE}.log}"
 
 ML_PID=""
 

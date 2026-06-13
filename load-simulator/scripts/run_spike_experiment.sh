@@ -40,7 +40,7 @@ RESULT_DIR="$ROOT_DIR/../results/k6/spike-load"
 SERVICE_URL="http://localhost:3001/health"
 TARGET_URL="http://localhost:3001"
 
-SETS=5
+SETS=1
 
 BASELINE_VUS=50
 SPIKE_TARGET_VUS=400

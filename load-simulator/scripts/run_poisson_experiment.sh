@@ -35,7 +35,7 @@ RESULT_DIR="$ROOT_DIR/../results/k6/poisson-arrival-rate"
 SERVICE_URL="http://localhost:3001/health"
 TARGET_URL="http://localhost:3001"
 
-SETS="${SETS:-5}"
+SETS="${SETS:-1}"
 
 MEAN_RPS="${MEAN_RPS:-110}"
 TOTAL_MINUTES="${TOTAL_MINUTES:-18}"
