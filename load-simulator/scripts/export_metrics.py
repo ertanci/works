@@ -192,17 +192,33 @@ def main():
         ''',
 
         "pod_count": '''
-            kube_deployment_status_replicas_available{
+            sum(kube_deployment_status_replicas_available{
               namespace="default",
               deployment="autoscale-test-service"
-            }
+            })
+            or
+            sum(kube_deployment_status_replicas_ready{
+              namespace="default",
+              deployment="autoscale-test-service"
+            })
+            or
+            count(kube_pod_status_phase{
+              namespace="default",
+              pod=~"autoscale-test-service-.*",
+              phase="Running"
+            } == 1)
         ''',
 
         "desired_replicas": '''
-            kube_deployment_spec_replicas{
+            sum(kube_deployment_spec_replicas{
               namespace="default",
               deployment="autoscale-test-service"
-            }
+            })
+            or
+            sum(kube_deployment_status_replicas{
+              namespace="default",
+              deployment="autoscale-test-service"
+            })
         ''',
 
         "in_progress_requests": '''
