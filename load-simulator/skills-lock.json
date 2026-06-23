@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "alterlab-dergipark": {
+      "source": "alterlab-ieu/alterlab-academic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/turkish-academia/alterlab-dergipark/SKILL.md",
+      "computedHash": "a98e20e3002b4dc6fa5d81cdd15e52c1a4b5fdf1a9cd606903ca57d29839cbd4"
+    },
+    "alterlab-yok-tez": {
+      "source": "alterlab-ieu/alterlab-academic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/turkish-academia/alterlab-yok-tez/SKILL.md",
+      "computedHash": "79f275953dacd830c70a07fc2a500d58d7122542a69127a16f517254cf852837"
+    }
+  }
+}
