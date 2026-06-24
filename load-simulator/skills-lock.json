@@ -7,6 +7,12 @@
       "skillPath": "skills/turkish-academia/alterlab-dergipark/SKILL.md",
       "computedHash": "a98e20e3002b4dc6fa5d81cdd15e52c1a4b5fdf1a9cd606903ca57d29839cbd4"
     },
+    "alterlab-literature-review": {
+      "source": "alterlab-ieu/alterlab-academic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/writing-tools/alterlab-literature-review/SKILL.md",
+      "computedHash": "9a610280cead49636cb1a842d8fbce1d10fd5a37aecb4d316b2c47a4eda66f69"
+    },
     "alterlab-yok-tez": {
       "source": "alterlab-ieu/alterlab-academic-skills",
       "sourceType": "github",
